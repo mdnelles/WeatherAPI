@@ -1,0 +1,79 @@
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState, AppThunk } from "../../app/store";
+//import { fetchCurrent } from './currentAPI';
+
+export interface CurrentState {
+   value: any;
+   status: "idle" | "loading" | "failed";
+}
+
+const initialState: CurrentState = {
+   value: {
+      coord: {
+         lon: -80.1937,
+         lat: 25.7743,
+      },
+      weather: [
+         {
+            id: 803,
+            main: "Clouds",
+            description: "broken clouds",
+            icon: "04n",
+         },
+      ],
+      base: "stations",
+      main: {
+         temp: 82.47,
+         feels_like: 90.54,
+         temp_min: 79,
+         temp_max: 84.02,
+         pressure: 1014,
+         humidity: 82,
+      },
+      visibility: 10000,
+      wind: {
+         speed: 7,
+         deg: 140,
+         gust: 0,
+      },
+      clouds: {
+         all: 75,
+      },
+      dt: 1662797730,
+      sys: {
+         type: 2,
+         id: 2009435,
+         country: "US",
+         sunrise: 1662807886,
+         sunset: 1662852664,
+      },
+      timezone: -14400,
+      id: 4164138,
+      name: "Miami",
+      cod: 200,
+   },
+   status: "idle",
+};
+
+export const currentSlice = createSlice({
+   name: "current",
+   initialState,
+   reducers: {
+      increment: (state) => {
+         state.value += 1;
+      },
+      decrement: (state) => {
+         state.value -= 1;
+      },
+      // Use the PayloadAction type to declare the contents of `action.payload`
+      incrementByAmount: (state, action: PayloadAction<number>) => {
+         state.value += action.payload;
+      },
+   },
+});
+
+export const { increment, decrement, incrementByAmount } = currentSlice.actions;
+
+export const selectCurrent = (state: RootState) => state.current.value;
+
+export default currentSlice.reducer;
