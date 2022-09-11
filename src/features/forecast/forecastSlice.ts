@@ -1537,52 +1537,16 @@ export const incrementAsync = createAsyncThunk(
 export const forecastSlice = createSlice({
    name: "forecast",
    initialState,
-   // The `reducers` field lets us define reducers and generate associated actions
    reducers: {
-      increment: (state) => {
-         state.value += 1;
+      update: (state, action: PayloadAction<any>) => {
+         state = action.payload;
       },
-      decrement: (state) => {
-         state.value -= 1;
-      },
-      // Use the PayloadAction type to declare the contents of `action.payload`
-      incrementByAmount: (state, action: PayloadAction<number>) => {
-         state.value += action.payload;
-      },
-   },
-
-   extraReducers: (builder) => {
-      builder
-         .addCase(incrementAsync.pending, (state) => {
-            state.status = "loading";
-         })
-         .addCase(incrementAsync.fulfilled, (state, action) => {
-            state.status = "idle";
-            state.value += action.payload;
-         })
-         .addCase(incrementAsync.rejected, (state) => {
-            state.status = "failed";
-         });
+      reset: () => initialState,
    },
 });
 
-export const { increment, decrement, incrementByAmount } =
-   forecastSlice.actions;
+export const { update, reset } = forecastSlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.forecast.value)`
 export const selectForecast = (state: RootState) => state.forecast.value;
-
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-export const incrementIfOdd =
-   (amount: number): AppThunk =>
-   (dispatch, getState) => {
-      const currentValue = selectForecast(getState());
-      if (currentValue % 2 === 1) {
-         dispatch(incrementByAmount(amount));
-      }
-   };
 
 export default forecastSlice.reducer;

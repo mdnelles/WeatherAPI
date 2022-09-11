@@ -6,35 +6,46 @@ body {
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
 }
-.content {
-   position: absolute;
-   width: 100%;
-   height: 100%;
-   top: 0;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-}
 
-.overlay {
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   background-color: rgba(0, 0, 0, 0.1);
+.city {
+   font-size: 40px;
+   text-align: center;
+   padding-top: 20px;
 }
-.flex {
+.row {
    display: flex;
+   flex-wrap: wrap;
 }
-.main {
-   min-width: 500px;
-   height: 500px;
-   margin: 0 auto;
-   border: 2px solid blue;
-   background-color: #cccc99;
+.col {
+   flex: 1;
+   min-width: 140px;
+   text-align: center;
+   vertical-align: middle;
 }
-
+.temp {
+   padding-top: 25px;
+   padding-left: 10px;
+   text-align: center;
+   font-size: 50px;
+}
+.fonts_big {
+   color: beige;
+   text-shadow: 5px 5px 11px #111;
+}
+.fonts_med {
+   color: #111;
+   text-shadow: 3px 3px 8px #eee;
+}
+.med_font {
+   font-size: 3vh;
+}
+.window {
+   min-width: 300px;
+   min-height: 500px;
+   padding: 10px;
+   border-radius: 10px;
+   background: rgba(5, 5, 5, 0.3); /*  10% opaque green */
+}
 .bg_image {
    background-position: center;
    background-repeat: no-repeat;
@@ -43,4 +54,24 @@ body {
 .sb {
    border: 1px dotted red;
    padding: 3px;
+}
+/* centering */
+.vertical-center {
+   margin: 0;
+   position: absolute;
+   top: 50%;
+   -ms-transform: translateY(-50%);
+   transform: translateY(-50%);
+}
+.center-inner {
+   display: table;
+   margin: 0 auto;
+}
+
+.center-outer {
+   width: 100%;
+}
+.center {
+   margin: auto;
+   text-align: center;
 }

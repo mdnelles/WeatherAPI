@@ -59,20 +59,14 @@ export const currentSlice = createSlice({
    name: "current",
    initialState,
    reducers: {
-      increment: (state) => {
-         state.value += 1;
+      update: (state, action: PayloadAction<any>) => {
+         state = action.payload;
       },
-      decrement: (state) => {
-         state.value -= 1;
-      },
-      // Use the PayloadAction type to declare the contents of `action.payload`
-      incrementByAmount: (state, action: PayloadAction<number>) => {
-         state.value += action.payload;
-      },
+      reset: () => initialState,
    },
 });
 
-export const { increment, decrement, incrementByAmount } = currentSlice.actions;
+export const { update, reset } = currentSlice.actions;
 
 export const selectCurrent = (state: RootState) => state.current.value;
 
