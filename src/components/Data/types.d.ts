@@ -1,6 +1,7 @@
 export interface ForecastObj {
-   high: number;
-   low: number;
-   day: string;
+   highArr: number[];
+   lowArr: number[];
+   dayArr: string[];
+   iconArr: string[];
 }
-export type forcastArr = ForecastObj[];
+export type ForecastArr = undefined | ForecastObj[];

@@ -32,6 +32,7 @@ export default function Ticker(props: TickerProps) {
       css: `color:#333;
                 text-align:center;
                 font-size:25px;
+                letter-spacing:-2px;
                 backface-visibility: hidden;
                 font-family: Arial, Helvetica, sans-serif;
                 `,
