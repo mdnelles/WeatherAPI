@@ -1,7 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+   ForecastState,
+   updateForecast,
+} from "../../features/forecast/forecastSlice";
 import { SessionState } from "../../features/session/sessionSlice";
+import { API_URL, API_KEY } from "../../utils/config";
+import CelcToggle from "../CelcToggle";
 import Forecast from "../Forecast";
+import Search from "../Search";
 import Ticker from "../Ticker";
 import { build_forcast_obj, get_day } from "./functions";
 import { ForecastArr } from "./types";
@@ -13,11 +20,13 @@ const foreStyle = {
 };
 
 export default function Data() {
-   //const dispatch = useAppDispatch();
+   const dis = useAppDispatch();
 
    const data: any = useAppSelector((state) => state.forecast.value);
    const session: SessionState = useAppSelector((state) => state.session);
-   const obj = useRef<any | ForecastArr | undefined>(undefined);
+   const forecast: ForecastState = useAppSelector((state) => state.forecast);
+   //const obj = useRef<any | ForecastArr | undefined>(undefined);
+   const [obj, setObj] = useState<any | ForecastArr>(undefined);
    const [city, setCity] = useState<string>("");
 
    const temp: number = parseInt(data.list[0].main.temp);
@@ -28,20 +37,49 @@ export default function Data() {
    const bottom: string = `Pressure ${data.list[0].main.pressure / 10}kPa`;
 
    if (city !== session.city) {
-      obj.current = build_forcast_obj(data);
-      console.log(obj.current);
+      setObj(build_forcast_obj(data));
       setCity(session.city);
+      setTimeout(() => setCity(session.city), 300);
    }
+
+   useEffect(() => {
+      if (session.city !== forecast.value.city.name) {
+         (async () => {
+            try {
+               const response = await fetch(
+                  `${API_URL}?q=${city}&units=imperial&APPID=${API_KEY}`
+               );
+               if (response.status === 200) {
+                  const data = await response.json();
+                  dis(updateForecast(data));
+               } else {
+                  alert(`Could not find city: ` + city);
+               }
+            } catch (error) {
+               console.log(error);
+            }
+         })();
+      }
+   }, [session.city]);
+   useEffect(() => {
+      console.log("UE forecast: " + session.city);
+   }, [forecast]);
+   useEffect(() => {
+      console.log("UE session.unit: " + session.city);
+   }, [session.unit]);
 
    return (
       <div className='vertical-center center-outer'>
          <div className='center-inner'>
             <div className='window'>
+               <Search />
                <div className='city fonts_big'>{data.city.name}</div>
                <div className='row'>
                   <div className='col temp'>
-                     {temp}
-                     <span>&deg;</span> F
+                     {session.unit === "Celsius"
+                        ? Math.trunc(((temp - 32) * 5) / 9)
+                        : temp}
+                     <span>&deg;</span> {session.unit === "Celsius" ? "C" : "F"}
                   </div>
                   <div className='col'>
                      <img
@@ -58,45 +96,49 @@ export default function Data() {
                      style={{
                         display: "flex",
                         flexWrap: "wrap",
+                        height: 260,
                      }}
                   >
                      {obj === undefined ? null : (
                         <>
                            <div style={foreStyle}>
                               <Forecast
-                                 icon={obj.current.iconArr[1]}
-                                 date={obj.current.dayArr[1]}
-                                 high={obj.current.highArr[1]}
-                                 low={obj.current.lowArr[1]}
+                                 icon={obj.iconArr[0]}
+                                 date={obj.dayArr[0]}
+                                 high={obj.highArr[0]}
+                                 low={obj.lowArr[0]}
                               />
                            </div>
                            <div style={foreStyle}>
                               <Forecast
-                                 icon={obj.current.iconArr[2]}
-                                 date={obj.current.dayArr[2]}
-                                 high={obj.current.highArr[2]}
-                                 low={obj.current.lowArr[2]}
+                                 icon={obj.iconArr[1]}
+                                 date={obj.dayArr[1]}
+                                 high={obj.highArr[1]}
+                                 low={obj.lowArr[1]}
                               />
                            </div>
                            <div style={foreStyle}>
                               <Forecast
-                                 icon={obj.current.iconArr[3]}
-                                 date={obj.current.dayArr[3]}
-                                 high={obj.current.highArr[3]}
-                                 low={obj.current.lowArr[3]}
+                                 icon={obj.iconArr[2]}
+                                 date={obj.dayArr[2]}
+                                 high={obj.highArr[2]}
+                                 low={obj.lowArr[2]}
                               />
                            </div>
                            <div style={foreStyle}>
                               <Forecast
-                                 icon={obj.current.iconArr[4]}
-                                 date={obj.current.dayArr[4]}
-                                 high={obj.current.highArr[4]}
-                                 low={obj.current.lowArr[4]}
+                                 icon={obj.iconArr[3]}
+                                 date={obj.dayArr[3]}
+                                 high={obj.highArr[3]}
+                                 low={obj.lowArr[3]}
                               />
                            </div>
                         </>
                      )}
                   </div>
+               </div>
+               <div className='row'>
+                  <CelcToggle />
                </div>
             </div>
          </div>

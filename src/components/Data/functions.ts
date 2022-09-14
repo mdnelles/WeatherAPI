@@ -13,23 +13,22 @@ export const build_forcast_obj = (data: any) => {
          low: number = 200;
       data.list.forEach((e: any, i: any) => {
          const this_day = get_day(e.dt_txt);
+         if (e.main.temp_min < low) low = e.main.temp_min;
+         if (e.main.temp_max > high) high = e.main.temp_max;
+
          if (this_day !== last_day) {
             last_day = this_day;
+            highArr.push(high);
+            lowArr.push(low);
+            dayArr.push(this_day);
+            iconArr.push(e.weather[0].icon);
 
-            if (ct >= 0) {
-               highArr.push(high);
-               lowArr.push(low);
-               dayArr.push(this_day);
-               iconArr.push(e.weather[0].icon);
-            }
             low = 200;
             high = -200;
             ct++;
-         } else {
-            if (e.main.temp_min < low) low = e.main.temp_min;
-            if (e.main.temp_max > high) high = e.main.temp_max;
          }
       });
+      console.log("finished:" + data.city.name);
       return {
          highArr,
          lowArr,

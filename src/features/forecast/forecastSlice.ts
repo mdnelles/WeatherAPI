@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
-import { fetchForecast } from "./forecastAPI";
 
 export interface ForecastState {
    value: any;
@@ -1525,27 +1524,18 @@ const initialState: ForecastState = {
    status: "idle",
 };
 
-export const incrementAsync = createAsyncThunk(
-   "forecast/fetchForecast",
-   async (amount: number) => {
-      const response = await fetchForecast(amount);
-      // The value we return becomes the `fulfilled` action payload
-      return response.data;
-   }
-);
-
 export const forecastSlice = createSlice({
    name: "forecast",
    initialState,
    reducers: {
-      update: (state, action: PayloadAction<any>) => {
-         state = action.payload;
+      updateForecast: (state, action: PayloadAction<any>) => {
+         state.value = action.payload;
       },
-      reset: () => initialState,
+      resetForecast: () => initialState,
    },
 });
 
-export const { update, reset } = forecastSlice.actions;
+export const { updateForecast, resetForecast } = forecastSlice.actions;
 
 export const selectForecast = (state: RootState) => state.forecast.value;
 
