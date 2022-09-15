@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
    ForecastState,
@@ -10,7 +10,7 @@ import CelcToggle from "../CelcToggle";
 import Forecast from "../Forecast";
 import Search from "../Search";
 import Ticker from "../Ticker";
-import { build_forcast_obj, get_day } from "./functions";
+import { build_forcast_obj } from "./functions";
 import { ForecastArr } from "./types";
 
 const foreStyle = {
@@ -22,18 +22,20 @@ const foreStyle = {
 export default function Data() {
    const dis = useAppDispatch();
 
-   const data: any = useAppSelector((state) => state.forecast.value);
+   const data: ForecastState | any = useAppSelector(
+      (state) => state.forecast.value
+   );
    const session: SessionState = useAppSelector((state) => state.session);
    const forecast: ForecastState = useAppSelector((state) => state.forecast);
    const [obj, setObj] = useState<any | ForecastArr>(undefined);
    const [city, setCity] = useState<string>("");
 
    const temp: number = parseInt(data.list[0].main.temp);
-   const icon: string = data.list[0].weather[0].icon;
-   const front: string = data.list[0].weather[0].description;
-   const back: string = `Wind speed: ${data.list[0].wind.speed} mph`;
-   const top: string = `Humidity ${data.list[0].main.humidity}%`;
-   const bottom: string = `Pressure ${data.list[0].main.pressure / 10}kPa`;
+   const icon = data.list[0].weather[0].icon;
+   const front = data.list[0].weather[0].description;
+   const back = `Wind speed: ${data.list[0].wind.speed} mph`;
+   const top = `Humidity ${data.list[0].main.humidity}%`;
+   const bottom = `Pressure ${data.list[0].main.pressure / 10}kPa`;
 
    if (city !== session.city) setCity(session.city);
 

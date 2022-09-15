@@ -1,5 +1,5 @@
 import { Cuboid } from "anim-3d-obj";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 
 interface ForecastProps {

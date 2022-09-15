@@ -1,17 +1,15 @@
-import { isJSDocNameReference } from "typescript";
-
 export const build_forcast_obj = (data: any) => {
-   let highArr: number[] = [];
-   let lowArr: number[] = [];
-   let dayArr: string[] = [];
-   let iconArr: string[] = [];
+   const highArr: number[] = [];
+   const lowArr: number[] = [];
+   const dayArr: string[] = [];
+   const iconArr: string[] = [];
 
    try {
-      let last_day: string = "na",
-         ct: number = -1,
-         high: number = -200,
-         low: number = 200;
-      data.list.forEach((e: any, i: any) => {
+      let last_day = "na",
+         ct = -1,
+         high = -200,
+         low = 200;
+      data.list.forEach((e: any) => {
          const this_day = get_day(e.dt_txt);
          if (e.main.temp_min < low) low = e.main.temp_min;
          if (e.main.temp_max > high) high = e.main.temp_max;
@@ -43,7 +41,7 @@ export const build_forcast_obj = (data: any) => {
 };
 
 export const get_day = (val: string) => {
-   let tmp = val.split("-");
+   const tmp = val.split("-");
    let month = "";
    if (tmp[1] === "01") month = "JAN";
    else if (tmp[1] === "02") month = "FEB";

@@ -1,9 +1,4 @@
 import { Cuboid } from "anim-3d-obj";
-import React from "react";
-
-const Back = (children: any) => {
-   return <div style={{ transform: "rotate(180deg)" }}>{children}</div>;
-};
 
 interface TickerProps {
    front: any;
