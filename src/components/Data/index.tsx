@@ -25,7 +25,6 @@ export default function Data() {
    const data: any = useAppSelector((state) => state.forecast.value);
    const session: SessionState = useAppSelector((state) => state.session);
    const forecast: ForecastState = useAppSelector((state) => state.forecast);
-   //const obj = useRef<any | ForecastArr | undefined>(undefined);
    const [obj, setObj] = useState<any | ForecastArr>(undefined);
    const [city, setCity] = useState<string>("");
 
@@ -36,11 +35,12 @@ export default function Data() {
    const top: string = `Humidity ${data.list[0].main.humidity}%`;
    const bottom: string = `Pressure ${data.list[0].main.pressure / 10}kPa`;
 
-   if (city !== session.city) {
+   if (city !== session.city) setCity(session.city);
+
+   if (!obj || !obj.city || data.city.name !== obj.city)
       setObj(build_forcast_obj(data));
-      setCity(session.city);
-      setTimeout(() => setCity(session.city), 300);
-   }
+
+   //console.log(build_forcast_obj(data));
 
    useEffect(() => {
       if (session.city !== forecast.value.city.name) {
@@ -63,10 +63,7 @@ export default function Data() {
    }, [session.city]);
    useEffect(() => {
       console.log("UE forecast: " + session.city);
-   }, [forecast]);
-   useEffect(() => {
-      console.log("UE session.unit: " + session.city);
-   }, [session.unit]);
+   }, [forecast, session.unit]);
 
    return (
       <div className='vertical-center center-outer'>
@@ -107,6 +104,8 @@ export default function Data() {
                                  date={obj.dayArr[0]}
                                  high={obj.highArr[0]}
                                  low={obj.lowArr[0]}
+                                 unit={session.unit}
+                                 duration={session.duration}
                               />
                            </div>
                            <div style={foreStyle}>
@@ -115,6 +114,8 @@ export default function Data() {
                                  date={obj.dayArr[1]}
                                  high={obj.highArr[1]}
                                  low={obj.lowArr[1]}
+                                 unit={session.unit}
+                                 duration={session.duration}
                               />
                            </div>
                            <div style={foreStyle}>
@@ -123,6 +124,8 @@ export default function Data() {
                                  date={obj.dayArr[2]}
                                  high={obj.highArr[2]}
                                  low={obj.lowArr[2]}
+                                 unit={session.unit}
+                                 duration={session.duration}
                               />
                            </div>
                            <div style={foreStyle}>
@@ -131,6 +134,8 @@ export default function Data() {
                                  date={obj.dayArr[3]}
                                  high={obj.highArr[3]}
                                  low={obj.lowArr[3]}
+                                 unit={session.unit}
+                                 duration={session.duration}
                               />
                            </div>
                         </>

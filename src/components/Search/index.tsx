@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { updateSession } from "../../features/session/sessionSlice";
 
 export default function Search(): JSX.Element {
+   const session: any = useAppSelector((state) => state.session);
    const dispatch = useAppDispatch();
    const [city, setCity] = useState<string>("");
    const get_city = () => {
-      console.log(city);
-      dispatch(updateSession({ ...sessionStorage, city }));
+      dispatch(updateSession({ ...session, city }));
    };
    return (
       <div className='search_wrapper'>

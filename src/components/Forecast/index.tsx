@@ -1,21 +1,33 @@
 import { Cuboid } from "anim-3d-obj";
 import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
-import { SessionState } from "../../features/session/sessionSlice";
 
 interface ForecastProps {
    icon: string;
    date: string;
    high: number | any;
    low: number | any;
+   unit: string;
+   duration: number;
 }
 
 export default function Forecast(props: ForecastProps) {
-   const { icon = "04n", date = "Feb 30", high = 85, low = 85 } = props;
+   const {
+      icon = "04n",
+      date = "Feb 30",
+      high = 85,
+      low = 85,
+      unit = "Celcius",
+      duration = 1,
+   } = props;
    const [direction, setDirection] = useState<string>("forward");
-   const session: SessionState = useAppSelector((state) => state.session);
+   const session: any = useAppSelector((state) => state.session);
 
-   const Loaded = () => {
+   const Loaded = ({ unit }: { unit: string }) => {
+      console.log("------unit-----");
+      console.log(unit);
+      console.log(session);
+
       return (
          <>
             <div
@@ -36,21 +48,17 @@ export default function Forecast(props: ForecastProps) {
             <div style={{ textAlign: "center" }}>
                <div style={{ fontSize: ".7em", color: "#555" }}>high</div>
                {parseInt(
-                  session.unit === "Celsius"
-                     ? Math.trunc(((high - 32) * 5) / 9)
-                     : high
+                  unit === "Celsius" ? Math.trunc(((high - 32) * 5) / 9) : high
                )}{" "}
-               {session.unit === "Celsius" ? "C" : "F"}
+               {unit === "Celsius" ? "C" : "F"}
             </div>
             <div style={{ padding: 5 }}></div>
             <div style={{ textAlign: "center" }}>
                <div style={{ fontSize: ".7em", color: "#555" }}>low</div>
                {parseInt(
-                  session.unit === "Celsius"
-                     ? Math.trunc(((low - 32) * 5) / 9)
-                     : low
+                  unit === "Celsius" ? Math.trunc(((low - 32) * 5) / 9) : low
                )}{" "}
-               {session.unit === "Celsius" ? "C" : "F"}
+               {unit === "Celsius" ? "C" : "F"}
             </div>
          </>
       );
@@ -84,7 +92,7 @@ export default function Forecast(props: ForecastProps) {
       degreesLow: 0,
       delay: 0,
       direction,
-      duration: session.duration,
+      duration,
       fillMode: "forwards",
       iterationCount: 1,
       name: "fwdy018",
@@ -98,17 +106,20 @@ export default function Forecast(props: ForecastProps) {
       },
       back: {
          css: ``,
-         body: <Loaded />,
+         body: <Loaded unit={unit} />,
       },
    };
 
    useEffect(() => {
-      console.log("UE Fore");
       if (direction === "forwards")
          setTimeout(() => {
             setDirection("reverse");
-         }, session.duration * 1000 + 100);
+         }, duration * 1000 + 100);
    }, []);
+
+   useEffect(() => {
+      //session
+   }, [session]);
 
    return (
       <Cuboid

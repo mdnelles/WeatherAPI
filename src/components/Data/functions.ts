@@ -34,6 +34,7 @@ export const build_forcast_obj = (data: any) => {
          lowArr,
          dayArr,
          iconArr,
+         city: data.city.name,
       };
    } catch (error) {
       console.log(error);
