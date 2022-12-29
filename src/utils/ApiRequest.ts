@@ -12,7 +12,8 @@ const processFinally = () => {
 };
 const processError = (err: any) => {
    if (axios.isCancel(err)) {
-      throw new axios.Cancel(err);
+      console.log(err);
+      throw new axios.Cancel("error");
    }
 
    return Promise.reject(err);

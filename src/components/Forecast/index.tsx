@@ -1,4 +1,5 @@
-import { Cuboid } from "anim-3d-obj";
+import Obj from "anim-3d-obj/dist/cjs/components/Obj";
+
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 
@@ -24,10 +25,6 @@ export default function Forecast(props: ForecastProps) {
    const session: any = useAppSelector((state) => state.session);
 
    const Loaded = ({ unit }: { unit: string }) => {
-      console.log("------unit-----");
-      console.log(unit);
-      console.log(session);
-
       return (
          <>
             <div
@@ -64,16 +61,7 @@ export default function Forecast(props: ForecastProps) {
       );
    };
 
-   const faceprops = {
-      front: true,
-      back: true,
-      left: false,
-      right: false,
-      top: false,
-      bottom: false,
-   };
-
-   const global: object = {
+   const global = {
       css: `
          border-radius:10px;
          padding-top:25px;
@@ -86,7 +74,7 @@ export default function Forecast(props: ForecastProps) {
       body: " ",
    };
 
-   const anim1Specs: object = {
+   const anim1 = {
       border: "",
       degreesHi: 0,
       degreesLow: 0,
@@ -99,16 +87,16 @@ export default function Forecast(props: ForecastProps) {
       timing: "ease-in-out",
    };
 
-   const custom: object = {
-      front: {
+   const anim2 = {};
+
+   const faces = [
+      {
+         name: "front",
          css: ``,
          body: <img src='loading.svg' width='50px' height='50px' />,
       },
-      back: {
-         css: ``,
-         body: <Loaded unit={unit} />,
-      },
-   };
+      { name: "back", css: ``, body: <Loaded unit={unit} /> },
+   ];
 
    useEffect(() => {
       if (direction === "forwards")
@@ -121,17 +109,18 @@ export default function Forecast(props: ForecastProps) {
       //session
    }, [session]);
 
-   return (
-      <Cuboid
-         width={60}
-         height={165}
-         depth={33}
-         perspectiveOrigin='50% 50%'
-         zIndex={10}
-         custom={custom}
-         faces={faceprops}
-         anim1Specs={anim1Specs}
-         global={global}
-      />
-   );
+   const objProps = {
+      width: 60,
+      height: 165,
+      depth: 33,
+      perspectiveOrigin: "50% 50%",
+      perspective: 900,
+      faces,
+      anim1,
+      anim2,
+      global,
+      showCenterDiv: false,
+   };
+
+   return <Obj {...objProps} />;
 }

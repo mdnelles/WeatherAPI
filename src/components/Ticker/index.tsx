@@ -1,4 +1,4 @@
-import { Cuboid } from "anim-3d-obj";
+import Obj from "anim-3d-obj/dist/cjs/components/Obj";
 
 interface TickerProps {
    front: any;
@@ -14,16 +14,8 @@ export default function Ticker(props: TickerProps) {
       top = "top",
       bottom = "bottom",
    } = props;
-   const faceprops = {
-      front: true,
-      back: true,
-      left: false,
-      right: false,
-      top: true,
-      bottom: true,
-   };
 
-   const global: object = {
+   const global = {
       css: `color:#333;
                 text-align:center;
                 font-size:25px;
@@ -33,50 +25,43 @@ export default function Ticker(props: TickerProps) {
                 `,
       body: "|||||||||||||||",
    };
-   const anim1Specs: object = {
+   const anim1 = {
       border: "",
-      degreesHi: -45, // degrees if spin
-      degreesLow: 45, // degrees if spin
+      degreesHi: -45,
+      degreesLow: 45,
       delay: 0,
-      direction: "normal", //normal altenating reverse
+      direction: "normal",
       duration: 6,
-      fillMode: "forward", // node forward backward both
+      fillMode: "forward",
       iterationCount: "infinite",
       name: "X360",
-      timing: "linear", // linear ease ease-in-out
+      timing: "linear",
    };
+   const anim2 = {};
 
-   const custom: object = {
-      // // face individual styles (over rides global)
-      front: {
-         css: ``,
-         body: front,
-      },
-      bottom: {
-         css: ``,
-         body: bottom,
-      },
-      top: {
-         css: ``,
-         body: top,
-      },
-      back: {
+   const faces = [
+      { name: "front", css: ``, body: front },
+      { name: "bottom", css: ``, body: bottom },
+      { name: "top", css: ``, body: top },
+      {
+         name: "back",
          css: ``,
          body: <div style={{ transform: "rotate(180deg)" }}>{back}</div>,
       },
+   ];
+
+   const objProps = {
+      width: 300,
+      height: 30,
+      depth: 30,
+      perspectiveOrigin: "50% 50%",
+      perspective: 900,
+      faces,
+      anim1,
+      anim2,
+      global,
+      showCenterDiv: false,
    };
 
-   return (
-      <Cuboid
-         width={300}
-         height={30}
-         depth={30}
-         perspectiveOrigin='50% 50%'
-         zIndex={10}
-         anim1Specs={anim1Specs}
-         custom={custom}
-         faces={faceprops}
-         global={global}
-      />
-   );
+   return <Obj {...objProps} />;
 }
