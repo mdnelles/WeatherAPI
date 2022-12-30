@@ -1,6 +1,19 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { updateSession } from "../../features/session/sessionSlice";
+import { styled } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import SearchIcon from "@mui/icons-material/Search";
+import Button, { ButtonProps } from "@mui/material/Button";
+
+const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+   "color": theme.palette.getContrastText("#fff"),
+   "backgroundColor": "#90cc70",
+   "&:hover": {
+      backgroundColor: "#90cc70",
+   },
+}));
 
 export default function Search(): JSX.Element {
    const session: any = useAppSelector((state) => state.session);
@@ -10,24 +23,28 @@ export default function Search(): JSX.Element {
       dispatch(updateSession({ ...session, city }));
    };
    return (
-      <div className='search_wrapper'>
-         <div style={{ display: "flex", flexWrap: "wrap" }}>
-            <div style={{ flex: 1, minWidth: 30 }}>
-               <input
-                  type='text'
-                  className='search_box'
-                  placeholder='Type City Here...'
-                  onChange={(event) => setCity(event.target.value)}
-               />
-            </div>
-            <div style={{ flex: 1, minWidth: 3 }}>
-               <div className='go_wrapper'>
-                  <button className='go_button' onClick={get_city}>
-                     GO
-                  </button>
-               </div>
-            </div>
-         </div>
-      </div>
+      <Grid container spacing={2}>
+         <Grid item xs={9}>
+            <TextField
+               id='outlined-basic'
+               label='City'
+               size='small'
+               defaultValue={" "}
+               variant='outlined'
+               fullWidth={true}
+               placeholder='Type City Here...'
+               onChange={(event: any) => setCity(event.target.value)}
+            />
+         </Grid>
+         <Grid item xs={3}>
+            <ColorButton
+               variant='contained'
+               sx={{ height: 40 }}
+               onClick={() => get_city()}
+            >
+               <SearchIcon />
+            </ColorButton>
+         </Grid>
+      </Grid>
    );
 }
