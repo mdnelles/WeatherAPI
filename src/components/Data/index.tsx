@@ -65,7 +65,10 @@ export default function Data() {
    }, [session.city]);
    useEffect(() => {
       console.log("UE forecast: " + session.city);
-   }, [forecast, session.unit]);
+   }, [forecast]);
+   useEffect(() => {
+      console.log("UE forecast: " + session.unit);
+   }, [session.unit]);
 
    return (
       <div className='vertical-center center-outer'>
@@ -75,10 +78,11 @@ export default function Data() {
                <div className='city fonts_big'>{data.city.name}</div>
                <div className='row'>
                   <div className='col temp'>
-                     {session.unit === "Celsius"
+                     {session.unit !== "Fahrenheit"
                         ? Math.trunc(((temp - 32) * 5) / 9)
                         : temp}
-                     <span>&deg;</span> {session.unit === "Celsius" ? "C" : "F"}
+                     <span>&deg;</span>{" "}
+                     {session.unit === "Fahrenheit" ? "F" : "C"}
                   </div>
                   <div className='col'>
                      <img
