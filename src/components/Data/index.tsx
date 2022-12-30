@@ -96,6 +96,7 @@ export default function Data() {
                         display: "flex",
                         flexWrap: "wrap",
                         height: 260,
+                        paddingLeft: 20,
                      }}
                   >
                      {obj === undefined ? null : (
