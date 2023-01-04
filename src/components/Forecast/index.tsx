@@ -55,9 +55,9 @@ export default function Forecast(props: ForecastProps) {
             <div style={{ textAlign: "center" }}>
                <div style={{ fontSize: ".7em", color: "#555" }}>low</div>
                {parseInt(
-                  unit === "Celsius" ? Math.trunc(((low - 32) * 5) / 9) : low
+                  unit !== "Fahrenheit" ? Math.trunc(((low - 32) * 5) / 9) : low
                )}{" "}
-               {unit === "Celsius" ? "C" : "F"}
+               {unit === "Fahrenheit" ? "F" : "C"}
             </div>
          </>
       );
