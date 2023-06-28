@@ -3,15 +3,6 @@ import React from "react";
 import Logo from "./Logo";
 
 export default function Github(): JSX.Element {
-   const faceprops = {
-      front: true,
-      back: true,
-      left: true,
-      right: true,
-      top: false,
-      bottom: false,
-   };
-
    const faces = [
       {
          name: "front",

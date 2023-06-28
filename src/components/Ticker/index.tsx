@@ -1,3 +1,4 @@
+import React from "react";
 import Obj from "anim-3d-obj/dist/cjs/components/Obj";
 
 interface TickerProps {

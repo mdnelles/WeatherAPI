@@ -1,3 +1,4 @@
+import React from "react";
 import Obj from "anim-3d-obj/dist/cjs/components/Obj";
 
 import { useEffect, useState } from "react";
@@ -18,7 +19,7 @@ export default function Forecast(props: ForecastProps) {
       date = "Feb 30",
       high = 85,
       low = 85,
-      unit = "Celcius",
+      unit = "",
       duration = 1,
    } = props;
    const [direction, setDirection] = useState<string>("forward");
@@ -49,7 +50,7 @@ export default function Forecast(props: ForecastProps) {
                      ? Math.trunc(((high - 32) * 5) / 9)
                      : high
                )}{" "}
-               {unit !== "Fahrenheit" ? "F" : "C"}
+               {unit === "Fahrenheit" ? "F" : "C"}
             </div>
             <div style={{ padding: 5 }}></div>
             <div style={{ textAlign: "center" }}>
