@@ -39,12 +39,12 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ### Available scripts
 
-| Command      | Description                        |
-| ------------ | ---------------------------------- |
-| `pnpm dev`   | Start the dev server               |
-| `pnpm build` | Production build                   |
-| `pnpm start` | Run the built app                  |
-| `pnpm lint`  | Lint with ESLint                   |
+| Command      | Description          |
+| ------------ | -------------------- |
+| `pnpm dev`   | Start the dev server |
+| `pnpm build` | Production build     |
+| `pnpm start` | Run the built app    |
+| `pnpm lint`  | Lint with ESLint     |
 
 ## Environment variables
 
@@ -103,13 +103,13 @@ Drop your production env file at `/var/www/weather/.env.production` — it survi
 
 Set these in **Settings → Secrets and variables → Actions**:
 
-| Secret       | Description                                       |
-| ------------ | ------------------------------------------------- |
-| `SSH_HOST`   | Server IP or hostname                             |
-| `SSH_USER`   | SSH user (needs write access to `/var/www/weather`) |
-| `SSH_KEY`    | Private key contents (e.g. `id_ed25519`)          |
-| `SSH_PORT`   | SSH port (optional, defaults to 22)               |
-| `REPO_URL`   | Git URL, only used on first clone                 |
+| Secret     | Description                                         |
+| ---------- | --------------------------------------------------- |
+| `SSH_HOST` | Server IP or hostname                               |
+| `SSH_USER` | SSH user (needs write access to `/var/www/weather`) |
+| `SSH_KEY`  | Private key contents (e.g. `id_ed25519`)            |
+| `SSH_PORT` | SSH port (optional, defaults to 22)                 |
+| `REPO_URL` | Git URL, only used on first clone                   |
 
 ### How the deploy runs
 
@@ -121,7 +121,7 @@ On each push to `main` the workflow:
 4. `pnpm build`.
 5. `pm2 reload ecosystem.config.js` (or `start` on first run) and `pm2 save`.
 
-The PM2 app is called `weather` and listens on port **3026**. An Nginx config is provided at [`nginx/weather.conf`](nginx/weather.conf) to reverse-proxy it. Install it, then run certbot to add TLS:
+The PM2 app is called `weather` and listens on port **3033**. An Nginx config is provided at [`nginx/weather.conf`](nginx/weather.conf) to reverse-proxy it. Install it, then run certbot to add TLS:
 
 ```bash
 sudo cp nginx/weather.conf /etc/nginx/sites-available/weather
