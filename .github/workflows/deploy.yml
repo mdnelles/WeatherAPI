@@ -41,6 +41,15 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
+            # Trust github.com so `git clone`/`git fetch` don't fail on first run.
+            mkdir -p "$HOME/.ssh"
+            chmod 700 "$HOME/.ssh"
+            touch "$HOME/.ssh/known_hosts"
+            chmod 644 "$HOME/.ssh/known_hosts"
+            if ! ssh-keygen -F github.com -f "$HOME/.ssh/known_hosts" > /dev/null; then
+              ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> "$HOME/.ssh/known_hosts" 2>/dev/null
+            fi
+
             # First-time clone if directory is empty
             if [ ! -d "$APP_DIR/.git" ]; then
               echo "--> First-time setup: cloning repo into $APP_DIR"
@@ -66,11 +75,14 @@ jobs:
             pnpm build
 
             echo "--> Starting / reloading PM2"
-            if pm2 describe weather > /dev/null 2>&1; then
-              pm2 reload ecosystem.config.js --update-env
-            else
-              pm2 start ecosystem.config.js
-            fi
+            echo "pm2 path: $(command -v pm2 || echo 'NOT FOUND')"
+            echo "pm2 version: $(pm2 -v || true)"
+            echo "node version: $(node -v || true)"
+
+            # Idempotent: starts if not running, reloads in-place if it is.
+            # Falls back to plain start for older pm2 versions that lack startOrReload.
+            pm2 startOrReload ecosystem.config.js --update-env \
+              || pm2 start ecosystem.config.js --update-env
 
             pm2 save
 
