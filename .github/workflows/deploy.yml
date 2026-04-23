@@ -9,6 +9,10 @@ concurrency:
   group: deploy-production
   cancel-in-progress: false
 
+env:
+  # Opt in to Node 24 for JS-based actions (silences the Node 20 deprecation warning).
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     name: Build & deploy on server
@@ -16,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.0.3

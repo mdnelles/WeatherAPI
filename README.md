@@ -121,7 +121,17 @@ On each push to `main` the workflow:
 4. `pnpm build`.
 5. `pm2 reload ecosystem.config.js` (or `start` on first run) and `pm2 save`.
 
-The PM2 app is called `weather` and listens on port 3000 — put Nginx or Caddy in front of it to handle TLS and proxy to `127.0.0.1:3000`.
+The PM2 app is called `weather` and listens on port **3026**. An Nginx config is provided at [`nginx/weather.conf`](nginx/weather.conf) to reverse-proxy it. Install it, then run certbot to add TLS:
+
+```bash
+sudo cp nginx/weather.conf /etc/nginx/sites-available/weather
+sudo ln -s /etc/nginx/sites-available/weather /etc/nginx/sites-enabled/weather
+# edit server_name to your real domain first
+sudo nginx -t && sudo systemctl reload nginx
+
+# then add HTTPS (certbot rewrites the config in place)
+sudo certbot --nginx -d weather.example.com
+```
 
 ## License
 
