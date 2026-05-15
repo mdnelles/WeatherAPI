@@ -2,7 +2,7 @@ module.exports = {
    apps: [
       {
          name: "weather",
-         cwd: "/var/www/weather",
+         cwd: "/var/www/weather.mikenelles.com/app",
          script: "node_modules/next/dist/bin/next",
          args: "start -p 3033",
          instances: 1,
